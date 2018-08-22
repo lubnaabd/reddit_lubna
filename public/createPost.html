@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="public/css/style.css">
+    <title>reddit</title>
+</head>
+
+<body>
+    <header class="cd-main-header" id="header">
+        <nav class="cd-main-nav js-main-nav">
+            <ul id="myList" class="cd-main-nav__list js-signin-modal-trigger">
+                <li>
+                    <a class="cd-main-nav__item cd-main-nav__item--signin" href="/" data-signin="login">Sign in</a>
+                </li>
+                <li>
+                    <a class="cd-main-nav__item cd-main-nav__item--signup" href="/" data-signin="signup">Sign up</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="cd-intro">
+        <div class="creatPostPage">
+
+            <div class="post1">
+                <h1>Create Post</h1>
+                <div class="post">
+                    <div class="domain_create">
+                        <textarea id="title" class="titleText" maxlength="300" placeholder="Title" rows="1"></textarea>
+                        </textarea>
+                        <textarea id="description" class="disText" maxlength="300" placeholder="Text" rows="10"></textarea>
+                        </textarea>
+
+                        <button class="btnADDpost" id="Add_Post"> Post</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="creatpost2">
+                <div class="">
+                    Posting to Reddit</div>
+                <ol>
+                    <li class="postReditt">Remember the human</li>
+                    <li class="postReditt">Behave like you would in real life</li>
+                    <li class="postReditt">Look for the original source of content</li>
+                    <li class="postReditt">Search for duplicates before posting</li>
+                    <li class="postReditt">Read the community’s rules</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="public/js/fetch.js"></script>
+    <script src="public/js/creatpost.js"></script>
+
+</body>
