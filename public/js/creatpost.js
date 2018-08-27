@@ -5,16 +5,14 @@ const AddPost = document.getElementById("Add_Post");
 const header = document.getElementById("header");
 
 window.addEventListener("load", () => {
-  fetchdata("GET", "/getname", null, (err, res) => {
-    if (err) {
-      GuestSession();
-    } else {
+  fetchdata("GET", "/getname", null)
+    .then(res => {
       MemberSession();
       const name = document.createElement("h4");
       name.textContent = res.user_name;
       header.appendChild(name);
-    }
-  });
+    })
+    .catch(err => GuestSession());
 
   AddPost.addEventListener("click", e => {
     const title = document.getElementById("title").value;
@@ -26,14 +24,12 @@ window.addEventListener("load", () => {
         title: title,
         description: description
       };
-      fetchdata("POST", "/addposts", post, (err, res) => {
-        if (err) {
-          alert(err);
-        } else {
+      fetchdata("POST", "/addposts", post)
+        .then(res => {
           alert(res);
           window.location = "/";
-        }
-      });
+        })
+        .catch(err => alert(err));
     }
   });
 
@@ -48,16 +44,13 @@ window.addEventListener("load", () => {
     li.appendChild(signout);
     list.appendChild(li);
     signout.addEventListener("click", e => {
-      fetchdata("GET", "/logout", null, (err, res) => {
-        if (err) {
-          alert(err);
-        } else {
+      fetchdata("GET", "/logout", null)
+        .then(res => {
           window.location = "/";
-        }
-      });
+        })
+        .catch(err => alert(err));
     });
   };
 
-  const GuestSession = () => {
-  };
+  const GuestSession = () => {};
 });

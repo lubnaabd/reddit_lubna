@@ -6,30 +6,21 @@ const header = document.getElementById("header");
 const Comment = document.getElementById("Comment");
 const notcomment = document.getElementById("notcomment");
 
-
-
-
-
 window.addEventListener("load", () => {
-  let post_id = sessionStorage.getItem('post_id');
-  fetchdata("POST", "/getcomments", post_id, (err, res) => {
-    if (err) {
-      alert(err);
-    } else {
-      rendering(JSON.parse(res));
-    }
-  });
+  let post_id = sessionStorage.getItem("post_id");
+  fetchdata("POST", "/getcomments", post_id)
+    .then(res => rendering(JSON.parse(res)))
+    .catch(err => alert(err));
 
-  fetchdata("GET", "/getname", null, (err, res) => {
-    if (err) {
-      GuestSession();
-    } else {
+  fetchdata("GET", "/getname", null)
+    .then(res => {
       MemberSession();
       const name = document.createElement("h4");
       name.textContent = res.user_name;
       header.appendChild(name);
-    }
-  });
+    })
+
+    .catch(err => GuestSession());
 
   AddComment.addEventListener("click", e => {
     const Comment = document.getElementById("Comment").value;
@@ -41,14 +32,12 @@ window.addEventListener("load", () => {
         post_id: post_id
       };
 
-      fetchdata("POST", "/addcomments", comment, (err, res) => {
-        if (err) {
-          alert(err);
-        } else {
+      fetchdata("POST", "/addcomments", comment)
+        .then(res => {
           alert(res);
           window.location = "/createCommnts";
-        }
-      });
+        })
+        .catch(err => alert(err));
     }
   });
 
@@ -63,19 +52,15 @@ window.addEventListener("load", () => {
     li.appendChild(signout);
     list.appendChild(li);
     signout.addEventListener("click", e => {
-      fetchdata("GET", "/logout", null, (err, res) => {
-        if (err) {
-          alert(err);
-        } else {
-          window.location = "/";
-        }
-      });
+      fetchdata("GET", "/logout", null)
+        .then(res => (window.location = "/"))
+        .catch(err => alert(err));
     });
   };
 
   const GuestSession = () => {
-    Comment.style.display="none";
-    AddComment.style.display="none"
+    Comment.style.display = "none";
+    AddComment.style.display = "none";
     // divText.style.display="none"
   };
 });
@@ -84,10 +69,9 @@ const rendering = arr => {
   arr.forEach(x => {
     const comments = document.createElement("div");
     if (x.comment !== null) {
-     const reply = document.createElement("button");
+      const reply = document.createElement("button");
       const divText = document.createElement("div");
       const commentsreply = document.createElement("div");
-
 
       comments.textContent = x.comment;
       reply.textContent = "Reply";
@@ -101,7 +85,7 @@ const rendering = arr => {
         textreply.classList.add("replyText");
         btnreply.classList.add("btnreplys");
         divText.classList.add("divText");
-        
+
         if (divText.style.display === "none") {
           divText.style.display = "block";
           while (divText.hasChildNodes()) {
@@ -121,10 +105,8 @@ const rendering = arr => {
       innercomment.appendChild(comments);
       innercomment.appendChild(commentsreply);
       innercomment.appendChild(divText);
-    }
-
-    else{
-      innercomment.textContent="No Comments This Post"
+    } else {
+      innercomment.textContent = "No Comments This Post";
     }
   });
 };

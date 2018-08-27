@@ -1,31 +1,31 @@
-const name = document.querySelector('#name');
-const email = document.querySelector('#email');
-const password = document.querySelector('#password');
-const confirmPassword = document.querySelector('#confirmPassword');
-const nameErr = document.querySelector('#nameErr');
-const emailErr = document.querySelector('#emailErr');
-const passwordErr = document.querySelector('#passwordErr');
-const confirmErr = document.querySelector('#confirmErr');
-const adduser = document.querySelector('#adduser');
+const name = document.querySelector("#name");
+const email1 = document.querySelector("#email1");
+const password = document.querySelector("#password");
+const confirmPassword = document.querySelector("#confirmPassword");
+const nameErr = document.querySelector("#nameErr");
+const emailErr = document.querySelector("#emailErr2");
+const passwordErr = document.querySelector("#passwordErr");
+const confirmErr = document.querySelector("#confirmErr");
+const adduser = document.querySelector("#adduser");
 
 const displayErr = (errElem, errMsg) => {
-    errElem.innerText = errMsg;
-  }
+  errElem.innerText = errMsg;
+};
 const checkName = () => {
-    if (name.value === "") {
-        displayErr(nameErr, "Please enter a name");
-    }
-}
+  if (name.value === "") {
+    displayErr(nameErr, "Please enter a name");
+  }
+};
 const checkEmail = () => {
-    if (email.validity.typeMismatch) {
-      displayErr(emailErr, "Please enter a valid email address");
-    } else if (email.validity.valueMissing) {
-      displayErr(emailErr, "Please enter an email address");
-    } else {
-      displayErr(emailErr, "");
-      return true;
-    }
-  };
+  if (email1.validity.typeMismatch) {
+    displayErr(emailErr, "Please enter a valid email address");
+  } else if (email1.validity.valueMissing) {
+    displayErr(emailErr, "Please enter an email address");
+  } else {
+    displayErr(emailErr, "");
+    return true;
+  }
+};
 
 const checkPw = () => {
   if (password.validity.patternMismatch) {
@@ -52,26 +52,37 @@ const checkConfirmPw = () => {
   }
 };
 
-name.addEventListener('focusout', checkName);
-email.addEventListener("focusout", checkEmail);
+name.addEventListener("focusout", checkName);
+email1.addEventListener("focusout", checkEmail);
 password.addEventListener("focusout", checkPw);
 confirmPassword.addEventListener("focusout", checkConfirmPw);
 
 adduser.addEventListener("click", e => {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+
+  if(!checkName){
+    event.preventDefault();
+   }
+  if (!checkEmail()) {
+    event.preventDefault();
+  }
+  if (!checkPw()) {
+    event.preventDefault();
+  }
+  if (!checkConfirmPw()) {
+    event.preventDefault();
+  }
+  else{const name = document.querySelector("#name").value;
+  const email = email1.value;
+  const password = document.querySelector("#password").value;
   let user = {
     name: name,
     email: email,
     password: password
   };
-  fetchdata("POST", "/signup", user, (err, res) => {
-   if (err) {
-      alert(err);
-    } else {
+  fetchdata("POST", "/signup", user)
+    .then(res => {
       alert("sign up");
-      window.location = '/';
-    }
-  });
+      window.location = "/";
+    })
+    .catch(err => alert(err));}
 });

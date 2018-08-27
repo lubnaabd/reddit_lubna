@@ -1,20 +1,17 @@
 const {
   serverStaticFile,
-  insetUser,
-  login,
-  displayAllpost,
   logout,
   getName,
-  addposts,
-  addcomments,
-  getComment,
   checkVote,
-  getUserPost,
   insertVote,
   handelError,
   pages
 } = require("./handler/functions.js");
 const auth_check = require("./handler/verfiy");
+const { insetUser } = require("./handler/signup");
+const { login } = require("./handler/login");
+const { displayAllpost, getUserPost, addposts } = require("./handler/post");
+const { addcomments, getComment } = require("./handler/comment");
 
 const router = (req, res) => {
   const endponit = req.url;
