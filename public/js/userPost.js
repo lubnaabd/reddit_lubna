@@ -6,27 +6,24 @@ const model = document.getElementById("model");
 const inner = document.querySelector(".inner");
 
 window.addEventListener("load", () => {
- let user_id = sessionStorage.getItem('user_id');
- 
-  fetchdata("GET", "/getname", null, (err, res) => {
-    if (err) GuestSession();
-    else {
+  let user_id = sessionStorage.getItem("user_id");
+
+  fetchdata("GET", "/getname", null)
+    .then(res => {
       MemberSession();
       const name = document.createElement("h4");
       name.textContent = res.user_name;
       header.appendChild(name);
       model.style.visibility = "hidden";
-     }
-  });
+    })
+    .catch(err => GuestSession());
 
-  fetchdata("POST", "/getUserPost", user_id, (err, res) => {
-    if (err) {
-      alert(err);
-    } else {
+  fetchdata("POST", "/getUserPost", user_id)
+    .then(res => {
       let arr = JSON.parse(res);
       rendering(arr);
-    }
-  });
+    })
+    .catch(err => alert(err));
 
   const MemberSession = restult => {
     while (list.hasChildNodes()) {
@@ -39,13 +36,9 @@ window.addEventListener("load", () => {
     li.appendChild(signout);
     list.appendChild(li);
     signout.addEventListener("click", e => {
-      fetchdata("GET", "/logout", null, (err, res) => {
-        if (err) {
-          alert(err);
-        } else {
-          window.location = "/";
-        }
-      });
+      fetchdata("GET", "/logout", null)
+        .then(res => (window.location = "/"))
+        .catch(err => alert(err));
     });
   };
 
@@ -84,28 +77,22 @@ const rendering = arr => {
     votpost.textContent = votpostvalue;
 
     votup.addEventListener("click", e => {
-      votup.style.background="red";
-      votpost.style.color="red";
-      votdown.style.background="transparent"
-
+      votup.style.background = "red";
+      votpost.style.color = "red";
+      votdown.style.background = "transparent";
     });
 
     votdown.addEventListener("click", e => {
       votup.style.background = "transparent";
-      votpost.style.color = "#000000"
-      votdown.style.background="red"
-       
-
+      votpost.style.color = "#000000";
+      votdown.style.background = "red";
     });
 
-    
     commnts.addEventListener("click", e => {
       const post_id = x.id;
-      sessionStorage.setItem('post_id', post_id);
+      sessionStorage.setItem("post_id", post_id);
       window.location = "/createCommnts";
     });
-
-
 
     inner2.classList.add("inner2");
     title.classList.add("title");
@@ -120,7 +107,6 @@ const rendering = arr => {
     votdown.classList.add("far");
     votdown.classList.add("fa-arrow-alt-circle-down");
 
-   
     div.appendChild(imgEle);
     div.appendChild(disEle);
     dis.appendChild(div);

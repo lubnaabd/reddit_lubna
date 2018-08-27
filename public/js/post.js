@@ -6,9 +6,8 @@ const model = document.getElementById("model");
 const inner = document.querySelector(".inner");
 
 window.addEventListener("load", () => {
-  fetchdata("GET", "/getname", null, (err, res) => {
-    if (err) GuestSession();
-    else {
+  fetchdata("GET", "/getname", null)
+    .then(res => {
       MemberSession();
       const name = document.createElement("h4");
       name.textContent = res.user_name;
@@ -18,17 +17,15 @@ window.addEventListener("load", () => {
         e.preventDefault();
         window.location = "/createPost";
       });
-    }
-  });
+    })
+    .catch(err => GuestSession());
 
-  fetchdata("GET", "/getpost", null, (err, res) => {
-    if (err) {
-      alert(err);
-    } else {
+  fetchdata("GET", "/getpost", null)
+    .then(res => {
       let arr = JSON.parse(res);
       rendering(arr);
-    }
-  });
+    })
+    .catch(err => alert(err));
 
   const MemberSession = restult => {
     while (list.hasChildNodes()) {
@@ -41,13 +38,9 @@ window.addEventListener("load", () => {
     li.appendChild(signout);
     list.appendChild(li);
     signout.addEventListener("click", e => {
-      fetchdata("GET", "/logout", null, (err, res) => {
-        if (err) {
-          alert(err);
-        } else {
-          window.location = "/";
-        }
-      });
+      fetchdata("GET", "/logout", null)
+        .then(res => (window.location = "/"))
+        .catch(err => alert(err));
     });
   };
 
@@ -87,18 +80,17 @@ const rendering = arr => {
     votpost.textContent = votpostvalue;
 
     votup.addEventListener("click", e => {
-      votup.style.background="red";
-      votpost.style.color="red";
-      votdown.style.background="transparent"
-
+      votup.style.background = "red";
+      votpost.style.color = "red";
+      votdown.style.background = "transparent";
     });
 
     votdown.addEventListener("click", e => {
       votup.style.background = "transparent";
-      votpost.style.color = "#000000"
-      votdown.style.background="red"
+      votpost.style.color = "#000000";
+      votdown.style.background = "red";
       const votpostvalue = 0;
-      const post_id= x.id;
+      const post_id = x.id;
       // let post = {
       //   votpostvalue: votpostvalue,
       //   post_id:post_id
@@ -112,24 +104,20 @@ const rendering = arr => {
       //     // window.location = "/";
       //   }
       // });
-
     });
-
-   
 
     //commentListener
     commnts.addEventListener("click", e => {
       const post_id = x.id;
-      sessionStorage.setItem('post_id', post_id);
+      sessionStorage.setItem("post_id", post_id);
       window.location = "/createCommnts";
     });
- //userProfile 
+    //userProfile
     title.addEventListener("click", e => {
-     const user_id = x.user_id;
-      sessionStorage.setItem('user_id', user_id);
-            window.location = "/UserPost";
+      const user_id = x.user_id;
+      sessionStorage.setItem("user_id", user_id);
+      window.location = "/UserPost";
     });
-
 
     inner2.classList.add("inner2");
     title.classList.add("title");
